@@ -3,183 +3,736 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab3142 - Welcome</title>
-    <meta name="description" content="Welcome to Lab3142 - Your digital innovation hub">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>LAB3142 - Digital Writing Laboratory</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@200;300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --void: #000000;
+            --deep-void: #0a0a0a;
+            --charcoal: #1a1a1a;
+            --dark-gray: #2a2a2a;
+            --mid-gray: #4a4a4a;
+            --light-gray: #8a8a8a;
+            --near-white: #e5e5e5;
+            --pure-white: #ffffff;
+            --accent-blue: #4a9eff;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-pink: #ec4899;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--void);
+            color: var(--near-white);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        
+        /* Simple cursor */
+        body {
+            cursor: none;
+        }
+        
+        .cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--pure-white);
+            z-index: 9999;
+            pointer-events: none;
+            transition: all 0.05s ease-out;
+            mix-blend-mode: difference;
+            border-radius: 50%;
+        }
+        
+        /* Minimal grid overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: -1;
+            background-image: 
+                linear-gradient(var(--pure-white) 1px, transparent 1px),
+                linear-gradient(90deg, var(--pure-white) 1px, transparent 1px);
+            background-size: 100px 100px;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--charcoal);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: 1.2rem;
+            color: var(--pure-white);
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .logo:hover {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+        
+        .nav-menu a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-weight: 300;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 3rem;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .hero h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(4rem, 12vw, 12rem);
+            font-weight: 200;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            color: var(--pure-white);
+            letter-spacing: -2px;
+        }
+        
+        .hero .accent-text {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease-in-out infinite;
+            font-weight: 300;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--light-gray);
+            max-width: 400px;
+            margin-bottom: 4rem;
+            line-height: 1.6;
+        }
+        
+        .minimal-button {
+            background: transparent;
+            border: 1px solid var(--light-gray);
+            color: var(--light-gray);
+            padding: 1rem 2rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        .minimal-button:hover {
+            border: 1px solid;
+            border-image: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green)) 1;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+        }
+        
+        /* Floating number */
+        .floating-number {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8rem;
+            font-weight: 200;
+            color: var(--charcoal);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        /* Content sections */
+        .section {
+            padding: 8rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid var(--charcoal);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--pure-white);
+        }
+        
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--mid-gray);
+        }
+        
+        /* Simple grid */
+        .simple-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem 6rem;
+        }
+        
+        .simple-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .simple-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .simple-card:hover .card-title {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+        }
+        
+        .simple-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        .simple-card:nth-child(1) .card-number { color: var(--accent-blue); }
+        .simple-card:nth-child(2) .card-number { color: var(--accent-purple); }
+        .simple-card:nth-child(3) .card-number { color: var(--accent-green); }
+        .simple-card:nth-child(4) .card-number { color: var(--accent-orange); }
+        .simple-card:nth-child(5) .card-number { color: var(--accent-pink); }
+        .simple-card:nth-child(6) .card-number { color: var(--accent-blue); }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--pure-white);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-description {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+        
+        /* Quote section */
+        .quote-section {
+            padding: 6rem 3rem;
+            text-align: center;
+            border-top: 1px solid var(--charcoal);
+            border-bottom: 1px solid var(--charcoal);
+            margin: 6rem 0;
+        }
+        
+        .quote-text {
+            font-size: 2rem;
+            font-weight: 200;
+            color: var(--pure-white);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.4;
+        }
+        
+        .quote-author {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: var(--mid-gray);
+            letter-spacing: 1px;
+        }
+        
+        /* Stats */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--charcoal);
+            border-bottom: 1px solid var(--charcoal);
+        }
+        
+        .stat-item {
+            padding: 4rem 2rem;
+            text-align: center;
+            border-right: 1px solid var(--charcoal);
+        }
+        
+        .stat-item:last-child {
+            border-right: none;
+        }
+        
+        .stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--pure-white);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 6rem 3rem 4rem;
+            border-top: 1px solid var(--charcoal);
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-text {
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: var(--mid-gray);
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 300;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--pure-white);
+        }
+        
+        .copyright {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--mid-gray);
+            font-weight: 300;
+        }
+        
+        /* Blog post styles */
+        .post-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--charcoal);
+        }
+
+        .post-title {
+            font-size: 3rem;
+            font-weight: 300;
+            color: var(--pure-white);
+            margin-bottom: 1rem;
+        }
+
+        .post-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--mid-gray);
+            letter-spacing: 1px;
+        }
+
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .post-content h1, .post-content h2, .post-content h3 {
+            color: var(--pure-white);
+            margin: 2rem 0 1rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+            color: var(--near-white);
+        }
+
+        .post-content code {
+            background: var(--charcoal);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-blue);
+        }
+
+        .post-nav {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--charcoal);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1.5rem 2rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-menu {
+                gap: 2rem;
+            }
+            
+            .hero {
+                padding: 0 2rem;
+            }
+            
+            .section {
+                padding: 4rem 2rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .simple-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-item {
+                border-bottom: 1px solid var(--charcoal);
+            }
+            
+            .stat-item:nth-child(2),
+            .stat-item:nth-child(4) {
+                border-right: none;
+            }
+            
+            .quote-text {
+                font-size: 1.5rem;
+            }
+            
+            .floating-number {
+                display: none;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        /* Subtle animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-content > * {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .hero h1 { animation-delay: 0.2s; }
+        .hero-subtitle { animation-delay: 0.4s; }
+        .minimal-button { animation-delay: 0.6s; }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-container">
-                <div class="logo">
-                    <h1>Lab3142</h1>
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <section id="home" class="hero">
-            <div class="hero-container">
-                <div class="hero-content">
-                    <h1 class="hero-title">Welcome to <span class="highlight">Lab3142</span></h1>
-                    <p class="hero-subtitle">Your digital innovation hub where ideas come to life</p>
-                    <div class="hero-buttons">
-                        <a href="#about" class="btn btn-primary">Learn More</a>
-                        <a href="#contact" class="btn btn-secondary">Get Started</a>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="hero-graphic">
-                        <div class="floating-element"></div>
-                        <div class="floating-element"></div>
-                        <div class="floating-element"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="about">
-            <div class="container">
-                <h2>About Lab3142</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>Lab3142 is a creative space dedicated to digital innovation and technological advancement. We believe in the power of technology to transform ideas into reality.</p>
-                        <p>Our mission is to provide cutting-edge solutions and foster a community of innovators, developers, and creators who push the boundaries of what's possible.</p>
-                    </div>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>100+</h3>
-                            <p>Projects Completed</p>
-                        </div>
-                        <div class="stat">
-                            <h3>50+</h3>
-                            <p>Happy Clients</p>
-                        </div>
-                        <div class="stat">
-                            <h3>24/7</h3>
-                            <p>Support Available</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="services" class="services">
-            <div class="container">
-                <h2>Our Services</h2>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <div class="service-icon">🚀</div>
-                        <h3>Web Development</h3>
-                        <p>Modern, responsive websites built with cutting-edge technologies and best practices.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">📱</div>
-                        <h3>Mobile Apps</h3>
-                        <p>Native and cross-platform mobile applications for iOS and Android devices.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">☁️</div>
-                        <h3>Cloud Solutions</h3>
-                        <p>Scalable cloud infrastructure and deployment solutions for your applications.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">🔒</div>
-                        <h3>Security</h3>
-                        <p>Comprehensive security audits and implementation for your digital assets.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="contact">
-            <div class="container">
-                <h2>Get In Touch</h2>
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <h3>Let's work together</h3>
-                        <p>Ready to bring your ideas to life? We'd love to hear from you and discuss how we can help achieve your goals.</p>
-                        <div class="contact-details">
-                            <div class="contact-item">
-                                <span class="contact-icon">📧</span>
-                                <span>hello@lab3142.com</span>
-                            </div>
-                            <div class="contact-item">
-                                <span class="contact-icon">📱</span>
-                                <span>+1 (555) 123-4567</span>
-                            </div>
-                            <div class="contact-item">
-                                <span class="contact-icon">📍</span>
-                                <span>Innovation District, Tech City</span>
-                            </div>
-                        </div>
-                    </div>
-                    <form class="contact-form">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="subject" name="subject" placeholder="Subject" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-
+    <div class="cursor"></div>
+    <div class="grid-overlay"></div>
+    
+    <nav>
+        <div class="nav-container">
+            <div class="logo">LAB3142</div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#writings">Writings</a></li>
+                <li><a href="#archive">Archive</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section id="home" class="hero">
+        <div class="floating-number">01</div>
+        <div class="hero-content">
+            <h1>WORDS IN THE <span class="accent-text">VOID</span></h1>
+            <p class="hero-subtitle">
+                A laboratory for thoughts, ideas, and digital experiments. 
+                Where writing meets minimalism in the endless dark.
+            </p>
+            <button class="minimal-button">Read Writings</button>
+        </div>
+    </section>
+    
+    <section id="writings" class="section">
+        <div class="section-header">
+            <h2 class="section-title">Recent Writings</h2>
+            <span class="section-number">02</span>
+        </div>
+        
+        <div class="simple-grid">
+            {% for post in site.posts limit:6 %}
+            <a href="{{ post.url }}" class="simple-card">
+                <div class="card-number">{{ forloop.index | prepend: '0' }}</div>
+                <h3 class="card-title">{{ post.title }}</h3>
+                <p class="card-description">
+                    {% if post.description %}
+                        {{ post.description }}
+                    {% else %}
+                        {{ post.excerpt | strip_html | truncate: 120 }}
+                    {% endif %}
+                </p>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <div class="quote-section">
+        <div class="quote-text">
+            "Write with the door closed, rewrite with the door open"
+        </div>
+        <div class="quote-author">Stephen King</div>
+    </div>
+    
+    <div class="stats-section">
+        <div class="stat-item">
+            <span class="stat-number">42</span>
+            <span class="stat-label">Coffee Cups</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">3.14</span>
+            <span class="stat-label">Pi Slices</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">404</span>
+            <span class="stat-label">Not Found</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Loop Count</span>
+        </div>
+    </div>
+    
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Lab3142</h3>
-                    <p>Your digital innovation hub where ideas come to life.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <div class="social-links">
-                        <a href="#" aria-label="Twitter">🐦</a>
-                        <a href="#" aria-label="LinkedIn">💼</a>
-                        <a href="#" aria-label="GitHub">📚</a>
-                        <a href="#" aria-label="Instagram">📷</a>
-                    </div>
-                </div>
+        <div class="footer-content">
+            <p class="footer-text">
+                A digital laboratory for thoughts and experiments. 
+                Where words find space to breathe in the darkness.
+            </p>
+            <div class="footer-links">
+                <a href="#">Archive</a>
+                <a href="#">RSS</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Lab3142. All rights reserved.</p>
-            </div>
+            <p class="copyright">© 2024 LAB3142. All thoughts reserved.</p>
         </div>
     </footer>
-
-    <script src="script.js"></script>
+    
+    <script>
+        // Simple cursor with smoother movement
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Smooth cursor animation
+        function animateCursor() {
+            const diffX = mouseX - cursorX;
+            const diffY = mouseY - cursorY;
+            
+            cursorX += diffX * 0.3; // Increased from 0.1 for more responsive feel
+            cursorY += diffY * 0.3;
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+        
+        // Cursor effects
+        const hoverElements = document.querySelectorAll('a, button, .simple-card');
+        hoverElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(3)';
+                // Cycle through colors
+                const colors = ['var(--accent-blue)', 'var(--accent-purple)', 'var(--accent-green)', 'var(--accent-orange)', 'var(--accent-pink)'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                cursor.style.backgroundColor = randomColor;
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.backgroundColor = 'var(--pure-white)';
+            });
+        });
+        
+        // Simple intersection observer
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.simple-card').forEach(card => {
+            observer.observe(card);
+        });
+        
+        // Staggered animation
+        const cards = document.querySelectorAll('.simple-card');
+        cards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
