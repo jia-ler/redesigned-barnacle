@@ -3,17 +3,345 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} - LAB3142</title>
-    <!-- Copy the entire <style> section from your current index.html here -->
+    <title>{% if page.title %}{{ page.title }} - LAB3142{% else %}LAB3142 - Digital Writing Laboratory{% endif %}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@200;300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --void: #000000;
+            --deep-void: #0a0a0a;
+            --charcoal: #1a1a1a;
+            --dark-gray: #2a2a2a;
+            --mid-gray: #4a4a4a;
+            --light-gray: #8a8a8a;
+            --near-white: #e5e5e5;
+            --pure-white: #ffffff;
+            --accent-blue: #4a9eff;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-pink: #ec4899;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--void);
+            color: var(--near-white);
+            line-height: 1.5;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        .cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--pure-white);
+            z-index: 9999;
+            pointer-events: none;
+            transition: all 0.05s ease-out;
+            mix-blend-mode: difference;
+            border-radius: 50%;
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: -1;
+            background-image: 
+                linear-gradient(var(--pure-white) 1px, transparent 1px),
+                linear-gradient(90deg, var(--pure-white) 1px, transparent 1px);
+            background-size: 100px 100px;
+        }
+        
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--charcoal);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: 1.2rem;
+            color: var(--pure-white);
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .logo:hover {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+        
+        .nav-menu a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-weight: 300;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        .section {
+            padding: 8rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid var(--charcoal);
+        }
+        
+        .minimal-button {
+            background: transparent;
+            border: 1px solid var(--light-gray);
+            color: var(--light-gray);
+            padding: 1rem 2rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .minimal-button:hover {
+            border: 1px solid;
+            border-image: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green)) 1;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+        }
+        
+        /* Blog post styles */
+        .post-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--charcoal);
+        }
+
+        .post-title {
+            font-size: 3rem;
+            font-weight: 300;
+            color: var(--pure-white);
+            margin-bottom: 1rem;
+        }
+
+        .post-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--mid-gray);
+            letter-spacing: 1px;
+        }
+
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .post-content h1, .post-content h2, .post-content h3 {
+            color: var(--pure-white);
+            margin: 2rem 0 1rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+            color: var(--near-white);
+        }
+
+        .post-content code {
+            background: var(--charcoal);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-blue);
+        }
+
+        .post-content pre {
+            background: var(--charcoal);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        .post-content blockquote {
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--light-gray);
+        }
+
+        .post-nav {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--charcoal);
+        }
+
+        .post-nav .minimal-button:hover {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-shift 2s ease-in-out infinite;
+            border: 1px solid;
+            border-image: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-green)) 1;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1.5rem 2rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-menu {
+                gap: 2rem;
+            }
+            
+            .section {
+                padding: 4rem 2rem;
+            }
+            
+            .post-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Copy cursor and nav from current index.html -->
+    <div class="cursor"></div>
+    <div class="grid-overlay"></div>
+    
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo">LAB3142</a>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#writings">Writings</a></li>
+                <li><a href="/archive">Archive</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </div>
+    </nav>
     
     <main>
         {{ content }}
     </main>
     
-    <!-- Copy footer from current index.html -->
-    <!-- Copy script section from current index.html -->
+    <script>
+        // Simple cursor with smoother movement
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Smooth cursor animation
+        function animateCursor() {
+            const diffX = mouseX - cursorX;
+            const diffY = mouseY - cursorY;
+            
+            cursorX += diffX * 0.3;
+            cursorY += diffY * 0.3;
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+        
+        // Cursor effects on hover
+        const hoverElements = document.querySelectorAll('a, button, .simple-card');
+        hoverElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(3)';
+                // Cycle through colors
+                const colors = ['var(--accent-blue)', 'var(--accent-purple)', 'var(--accent-green)', 'var(--accent-orange)', 'var(--accent-pink)'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                cursor.style.backgroundColor = randomColor;
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.backgroundColor = 'var(--pure-white)';
+            });
+        });
+    </script>
 </body>
 </html>
